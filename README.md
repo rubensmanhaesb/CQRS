@@ -9,16 +9,33 @@ forma contínua. Além disso, o projeto pode ser executado localmente utilizando
 - NugetPackages.docx  - contém as extensões utilizadas nos projetos em Angular e em .NET (Nuget) 
 - Configurações estão no appsettings.
 
+
+Caso tenha dúvidas, entre em contato através do e-mail: rubensmanhaesb@hotmail.com
+Você também pode conectar-se comigo no [LinkedIn](https://www.linkedin.com/in/rubens-bernardes-1b6769a7/).
+
 ## **Instruções para Execução**
 
 ### **Localmente (Docker)**
 - Certifique-se de ter o Docker instalado. Baixe o Docker Desktop em: https://www.docker.com/products/docker-desktop
 - Na pasta raiz do projeto (onde está o arquivo 'TarefasApp.sln'), execute o comando: **docker-compose up -d**
-- Banco de Dados - rodar a migration ou executar o arquivo Script.Sql (localizado na pasta rais do projeto)
+- Banco de Dados - rodar a migration ou executar o arquivo Script.Sql (localizado na pasta raiz do projeto)
 
- ### **No Azure**
+### **No Azure**
 - A API do projeto está publicada no Azure em: https://cqrs.azurewebsites.net/swagger/index.html
 
+## **Limitações da Versão Atual**
+Este projeto foi desenvolvido como parte de um desafio técnico e adota diversas práticas modernas de desenvolvimento. No entanto, para atender ao escopo do desafio, a versão atual não inclui a implementação de Autenticação e Autorização.
+
+### **Possíveis Melhorias Futuras**
+Caso o projeto seja continuado, as seguintes melhorias poderiam ser implementadas:
+
+### **Autenticação e Autorização:**
+
+Inclusão de mecanismos como OAuth 2.0 ou JWT para autenticar usuários e proteger os endpoints.
+Controle de acesso baseado em papéis (Roles) para restringir funcionalidades específicas.
+Configurações Seguras:
+
+Remoção do appsettings.production.json e substituição por variáveis de ambiente configuradas no Azure, garantindo maior segurança e seguindo boas práticas para gerenciamento de configurações sensíveis.
 
 ## Requisitos
 

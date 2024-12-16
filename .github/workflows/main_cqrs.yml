@@ -7,6 +7,12 @@ on:
   push:
     branches:
       - main
+    paths-ignore:  # Adicionado para ignorar alterações específicas
+      - 'README.md'  # Ignorar mudanças no arquivo README.md
+      - 'docs/**'  # (Opcional) Ignorar mudanças em qualquer arquivo dentro da pasta 'docs/'
+      - '**/*.js'        # Ignorar mudanças em arquivos JavaScript
+      - '**/*.css'       # Ignorar mudanças em arquivos CSS
+      - '**/*.html'      # Ignorar mudanças em arquivos HTML      
   workflow_dispatch:
 
 jobs:
