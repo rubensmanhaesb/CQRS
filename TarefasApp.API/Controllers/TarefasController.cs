@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TarefasApp.Application.Commands;
 using TarefasApp.Application.Dtos;
@@ -6,6 +7,7 @@ using TarefasApp.Application.Interfaces;
 
 namespace TarefasApp.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TarefasController : ControllerBase

@@ -20,6 +20,7 @@ builder.Services.AddDataContext(builder.Configuration);
 builder.Services.AddMongoDb(builder.Configuration);
 builder.Services.AddRabbitMQ(builder.Configuration);
 builder.Services.AddCorsConfig(builder.Configuration);
+builder.Services.AddJwtConfig(builder.Configuration);
 #endregion Services Extensions 
 
 var app = builder.Build();
@@ -34,9 +35,11 @@ app.UseSwagger();
 app.UseSwaggerUI();
 #endregion Apps Extensions
 
+#region App Extensions
 app.UseCorsConfig();
 app.UseSwaggerDoc();
-app.UseAuthorization();
+app.UseJwtConfig();
+#endregion App Extensions
 
 app.MapControllers();
 app.Run();

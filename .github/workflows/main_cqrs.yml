@@ -1,12 +1,16 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - cqrs
+name: Build and deploy ASP.Net Core apps - CQRS and UsuariosApp
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'TarefasApp/**'  # Alterações no projeto CQRS
+      - 'UsuariosApp/**'  # Alterações no projeto UsuariosApp      
+      
     paths-ignore:  # Adicionado para ignorar alterações específicas
       - 'README.md'  # Ignorar mudanças no arquivo README.md
       - 'docs/**'  # (Opcional) Ignorar mudanças em qualquer arquivo dentro da pasta 'docs/'
@@ -16,7 +20,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  buildCQRS:
     runs-on: windows-latest
 
     steps:
@@ -27,31 +31,23 @@ jobs:
         with:
           dotnet-version: '8.x'
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      - name: Build CQRS Project
+        run: dotnet build TarefasApp/TarefasApp.csproj --configuration Release
 
-      - name: Build test project Database
-        run: dotnet build TarefasApp.Infra.Data.Test\TarefasApp.Infra.Data.Test.csproj --configuration Release        
+      - name: Publish CQRS Project
+        run: dotnet publish TarefasApp/TarefasApp.csproj -c Release -o ./cqrs-app
 
-      - name: Build test project Integration
-        run: dotnet build TarefasApp.IntegrationTests\TarefasApp.IntegrationTests.csproj --configuration Release        
+      - name: Compress CQRS App into a ZIP
+        run: Compress-Archive -Path ./cqrs-app/* -DestinationPath ./cqrs-app.zip
 
-      - name: dotnet publish
-        run: dotnet publish -c Release -o ./myapp  # Publicar a aplicação no diretório 'myapp'
-
-      - name: Compress published app into a ZIP
-        run: Compress-Archive -Path ./myapp/* -DestinationPath ./myapp.zip  # Compactar a aplicação em um arquivo ZIP
-
-      - name: Upload artifact for deployment job
+      - name: Upload CQRS Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: .net-app
-          path: ./myapp.zip  # Fazer upload do arquivo ZIP
-          
-          
-  testInfra: 
+          name: cqrs-app
+          path: ./cqrs-app.zip
+
+  buildUsuariosApp:
     runs-on: windows-latest
-    needs: build
 
     steps:
       - uses: actions/checkout@v4
@@ -61,13 +57,24 @@ jobs:
         with:
           dotnet-version: '8.x'
 
-      - name: Run tests with dotnet
-        run: dotnet test TarefasApp.IntegrationTests\TarefasApp.IntegrationTests.csproj --configuration Release          
+      - name: Build UsuariosApp Project
+        run: dotnet build UsuariosApp/UsuariosApp.csproj --configuration Release
 
+      - name: Publish UsuariosApp Project
+        run: dotnet publish UsuariosApp/UsuariosApp.csproj -c Release -o ./usuariosapp
 
-  testIntegration: 
+      - name: Compress UsuariosApp into a ZIP
+        run: Compress-Archive -Path ./usuariosapp/* -DestinationPath ./usuariosapp.zip
+
+      - name: Upload UsuariosApp Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: usuarios-app
+          path: ./usuariosapp.zip
+
+  testCQRS:
     runs-on: windows-latest
-    needs: build
+    needs: buildCQRS
 
     steps:
       - uses: actions/checkout@v4
@@ -77,14 +84,27 @@ jobs:
         with:
           dotnet-version: '8.x'
 
-      - name: Run tests with dotnet
-        run: dotnet test TarefasApp.Infra.Data.Test\TarefasApp.Infra.Data.Test.csproj --configuration Release          
+      - name: Run Tests for CQRS Project
+        run: dotnet test TarefasApp.IntegrationTests/TarefasApp.IntegrationTests.csproj --configuration Release
 
-
-
-  deploy:
+  testUsuariosApp:
     runs-on: windows-latest
-    needs: [build, testInfra, testIntegration]
+    needs: buildUsuariosApp
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Run Tests for UsuariosApp Project
+        run: dotnet test UsuariosApp/UsuariosApp.Tests/UsuariosApp.Tests.csproj --configuration Release
+
+  deployCQRS:
+    runs-on: windows-latest
+    needs: [buildCQRS, testCQRS]
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
@@ -92,10 +112,41 @@ jobs:
       id-token: write #This is required for requesting the JWT
 
     steps:
+      - name: Download CQRS Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: cqrs-app
+      
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_0380288EC72F427BB9BE4D7DB3379640 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_45AC857EEB5447F28A9F7DB9B0616F55 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_12EC5EF3B7F44A73AA092E463C0BC0E0 }}
+
+      - name: Deploy CQRS App to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'cqrs'
+          slot-name: 'Production'
+          package: './cqrs-app.zip'  # Usar o arquivo ZIP gerado
+
+  
+  deployUsuariosApp:
+    runs-on: windows-latest
+    needs: [buildUsuariosApp, testUsuariosApp]
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    permissions:
+      id-token: write
+
+    steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: .net-app
+          name: usuarios-app
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -108,7 +159,6 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'cqrs'
+          app-name: 'usuariosapp'
           slot-name: 'Production'
-          package: './myapp.zip'  # Usar o arquivo ZIP gerado
-          
+          package: './usuariosapp.zip'          
