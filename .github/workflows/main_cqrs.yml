@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions 
 
-name: Build and deploy ASP.Net Core apps - CQRS and UsuariosApp
+name: Build and deploy ASP.Net Core apps - CQRS and UsuarioApp
 
 on:
   push:
@@ -54,20 +54,20 @@ jobs:
         with:
           dotnet-version: '8.x'
 
-      - name: Build UsuariosApp Project
-        run: dotnet build UsuariosApp/UsuariosApp.API/UsuariosApp.API.csproj --configuration Release
+      - name: Build UsuarioApp Project
+        run: dotnet build UsuarioApp/UsuarioApp.API/UsuarioApp.API.csproj --configuration Release
 
-      - name: Publish UsuariosApp Project
-        run: dotnet publish UsuariosApp/UsuariosApp.API/UsuariosApp.API.csproj -c Release -o ./usuariosapp
+      - name: Publish UsuarioApp Project
+        run: dotnet publish UsuarioApp/UsuarioApp.API/UsuarioApp.API.csproj -c Release -o ./usuarioapp
 
-      - name: Compress UsuariosApp into a ZIP
-        run: Compress-Archive -Path ./usuariosapp/* -DestinationPath ./usuariosapp.zip
+      - name: Compress UsuarioApp into a ZIP
+        run: Compress-Archive -Path ./usuarioapp/* -DestinationPath ./usuarioapp.zip
 
-      - name: Upload UsuariosApp Artifact
+      - name: Upload UsuarioApp Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: usuarios-app
-          path: ./usuariosapp.zip
+          name: usuario-app
+          path: ./usuarioapp.zip
 
   testCQRS:
     runs-on: windows-latest
@@ -96,8 +96,8 @@ jobs:
         with:
           dotnet-version: '8.x'
 
-      - name: Run Tests for UsuariosApp Project
-        run: dotnet test UsuariosApp/UsuariosApp.Tests/UsuariosApp.Tests.csproj --configuration Release
+      - name: Run Tests for UsuarioApp Project
+        run: dotnet test UsuarioApp/UsuarioApp.Tests/UsuarioApp.Tests.csproj --configuration Release
 
   deployCQRS:
     runs-on: windows-latest
@@ -156,6 +156,6 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'usuariosapp'
+          app-name: 'usuarioapp'
           slot-name: 'Production'
-          package: './usuariosapp.zip'          
+          package: './usuarioapp.zip'          
