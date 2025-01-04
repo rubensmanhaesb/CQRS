@@ -29,10 +29,10 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Build CQRS Project
-        run: dotnet build TarefasApp/TarefasApp.csproj --configuration Release
+        run: dotnet build TarefasApp.API/TarefasApp.API.csproj --configuration Release
 
       - name: Publish CQRS Project
-        run: dotnet publish TarefasApp/TarefasApp.csproj -c Release -o ./cqrs-app
+        run: dotnet publish TarefasApp.API/TarefasApp.API.csproj -c Release -o ./cqrs-app
 
       - name: Compress CQRS App into a ZIP
         run: Compress-Archive -Path ./cqrs-app/* -DestinationPath ./cqrs-app.zip
@@ -55,10 +55,10 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Build UsuariosApp Project
-        run: dotnet build UsuariosApp/UsuariosApp.csproj --configuration Release
+        run: dotnet build UsuariosApp/UsuariosApp.API/UsuariosApp.API.csproj --configuration Release
 
       - name: Publish UsuariosApp Project
-        run: dotnet publish UsuariosApp/UsuariosApp.csproj -c Release -o ./usuariosapp
+        run: dotnet publish UsuariosApp/UsuariosApp.API/UsuariosApp.API.csproj -c Release -o ./usuariosapp
 
       - name: Compress UsuariosApp into a ZIP
         run: Compress-Archive -Path ./usuariosapp/* -DestinationPath ./usuariosapp.zip
