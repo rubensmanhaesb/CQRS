@@ -97,7 +97,7 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Run Tests for UsuarioApp Project
-        run: dotnet test UsuarioApp/UsuarioApp.Tests/UsuarioApp.Tests.csproj --configuration Release
+        run: dotnet test UsuarioApp/UsuarioApp.Test/UsuarioApp.Test.csproj --configuration Release
 
   deployCQRS:
     runs-on: windows-latest
