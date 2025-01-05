@@ -50,6 +50,19 @@ services:
     networks:
       - mynetwork
 
+  usuarioapp:
+    container_name: usuarioapp
+    build:
+      context: .
+      dockerfile: ./UsuarioApp.API/Dockerfile
+    ports:
+      - "8081:8080"
+    depends_on:
+      - sqlserver
+    networks:
+      - mynetwork
+      
+
   angularapp:
     container_name: angularapp
     build:

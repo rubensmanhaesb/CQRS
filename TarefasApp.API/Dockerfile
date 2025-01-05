@@ -32,6 +32,8 @@ RUN dotnet restore "./TarefasApp.API/TarefasApp.API.csproj"
 
 # Copia todos os arquivos da solução para o contêiner.
 COPY . .
+RUN echo "Arquivos disponíveis no contexto de build:"
+RUN ls -R .
 
 # Define o diretório de trabalho como o diretório da API principal.
 WORKDIR "/src/TarefasApp.API"

@@ -6,10 +6,14 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["UsuarioApp.API/UsuarioApp.API.csproj", "UsuarioApp.API/"]
+
+COPY ["UsuarioApp/UsuarioApp.API/UsuarioApp.API.csproj", "UsuarioApp.API/"]
+
 RUN dotnet restore "./UsuarioApp.API/./UsuarioApp.API.csproj"
+
 COPY . .
 WORKDIR "/src/UsuarioApp.API"
+
 RUN dotnet build "./UsuarioApp.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
