@@ -55,10 +55,10 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Build UsuarioApp Project
-        run: dotnet build UsuarioApp/UsuarioApp.API/UsuarioApp.API.csproj --configuration Release
+        run: dotnet build UsuarioApp.API/UsuarioApp.API.csproj --configuration Release
 
       - name: Publish UsuarioApp Project
-        run: dotnet publish UsuarioApp/UsuarioApp.API/UsuarioApp.API.csproj -c Release -o ./usuarioapp
+        run: dotnet publish UsuarioApp.API/UsuarioApp.API.csproj -c Release -o ./usuarioapp
 
       - name: Compress UsuarioApp into a ZIP
         run: Compress-Archive -Path ./usuarioapp/* -DestinationPath ./usuarioapp.zip
@@ -97,7 +97,7 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Run Tests for UsuarioApp Project
-        run: dotnet test UsuarioApp/UsuarioApp.Test/UsuarioApp.Test.csproj --configuration Release
+        run: dotnet test UsuarioApp.Test/UsuarioApp.Test.csproj --configuration Release
 
   deployCQRS:
     runs-on: windows-latest
