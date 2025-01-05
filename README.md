@@ -21,18 +21,17 @@ Você também pode conectar-se comigo no [LinkedIn](https://www.linkedin.com/in/
 - Banco de Dados - rodar a migration ou executar o arquivo Script.Sql (localizado na pasta raiz do projeto)
 
 ### **No Azure**
-- A API do projeto está publicada no Azure em: https://cqrs.azurewebsites.net/swagger/index.html
-
+- A API TarefasApp.API do projeto está publicada no Azure em: https://cqrs.azurewebsites.net/swagger/index.html
+- A API UsuairiosApp.API do projeto está publicada no Azure em: https://usuarioscqrs.azurewebsites.net/swagger/index.html
 ## **Limitações da Versão Atual**
-Este projeto foi desenvolvido como parte de um desafio técnico e adota diversas práticas modernas de desenvolvimento. No entanto, para atender ao escopo do desafio, a versão atual não inclui a implementação de Autenticação e Autorização.
+Este projeto foi desenvolvido como parte de um desafio técnico e adota diversas práticas modernas de desenvolvimento. No entanto, a versão atual inclui a implementação de Autenticação e Autorização.
 
 ### **Possíveis Melhorias Futuras**
 Caso o projeto seja continuado, as seguintes melhorias poderiam ser implementadas:
 
 ### **Autenticação e Autorização:**
 
-Inclusão de mecanismos como OAuth 2.0 ou JWT para autenticar usuários e proteger os endpoints.
-Controle de acesso baseado em papéis (Roles) para restringir funcionalidades específicas.
+Desenvolver o front-end em MAUI disponibilizando para mobile.
 Configurações Seguras:
 
 Remoção do appsettings.production.json e substituição por variáveis de ambiente configuradas no Azure, garantindo maior segurança e seguindo boas práticas para gerenciamento de configurações sensíveis.
@@ -50,6 +49,7 @@ Remoção do appsettings.production.json e substituição por variáveis de ambi
 ## Funcionalidades
 
 - Gerenciamento de tarefas
+- Autenticação e Autorização
 - CRUD de tarefas 
 - API RESTful para interação com as tarefas
 - Implementação de princípios DDD e TDD para desenvolvimento orientado a testes
@@ -65,7 +65,7 @@ Remoção do appsettings.production.json e substituição por variáveis de ambi
 - Test-Driven Development (TDD)
 - MicroServiços
 - RabbitMQ (Mensageria)
-- Github Actions (CI /CD)
+- Github Actions (CI /CD) -- dois projetos na mesma pipe --
 
 ## Principais Ferramentas e Bibliotecas
 
@@ -86,21 +86,24 @@ Remoção do appsettings.production.json e substituição por variáveis de ambi
 ## Estrutura do Projeto
 
 - TarefasWeb (Angular)
-- TarefasApp.API (.NET)
+- UsuariosApp.API (.NET): Gerencia autenticação e usuários.
+- TarefasApp.API (.NET): Responsável pela gestão de tarefas.
 - Microsoft.AspNetCore.App: Inclui todos os pacotes necessários para construir uma aplicação ASP.NET Core.
 - System.Text.Json: Para serialização e desserialização de JSON.
 - Microsoft.Extensions.Logging: Para logging dentro da aplicação.
 - Microsoft.AspNetCore.Http: Para manipulação de requisições e respostas HTTP.
-- TarefasApp.Domain
+- TarefasApp.Domain:  Define as regras de negócio e entidades do domínio.
 - System.ComponentModel.Annotations: Para validações e anotações de dados.
 - FluentValidation: Para validações de regras de negócio e entidade.
+- Microsoft.AspNetCore.Authentication.JwtBearer: Para implementar autenticação baseada em tokens JWT (JSON Web Tokens).
+- FluentAssertions: Para facilitar asserções em testes, permitindo escrita de testes mais expressivos e legíveis.
 - TarefasApp.Infrastructure
 - MongoDB.Driver: Para interação com o MongoDB.
 - RabbitMQ.Client: Para interação com o RabbitMQ.
 - TarefasApp.Tests
-- xUnit: Framework de testes unitários.
-- Moq: Para criação de mocks em testes.
-- Microsoft.AspNetCore.Mvc.Testing: Para testes de integração em aplicações ASP.NET Core.
+	- xUnit: Framework de testes unitários.
+	- Moq: Para criação de mocks em testes.
+	- Microsoft.AspNetCore.Mvc.Testing: Para testes de integração em aplicações ASP.NET Core.
 
 ## Detalhamento da Estrutura do Projeto
 
@@ -134,4 +137,8 @@ Remoção do appsettings.production.json e substituição por variáveis de ambi
 		-	Implementar a interface de usuário para interagir com a API.
 		-	Gerenciar estado e navegação da aplicação.
 		-	Consumir endpoints da API para operações de leitura e escrita.
-
+7. UsuarioApp.API - Este projeto é a API responsável por gerar e gerenciar usuários na geração de tokens no padrão JWT. Ele utiliza o .NET 8 e é configurado para diferentes ambientes (Desenvolvimento e Produção) através de arquivos appsettings.
+    - Principais Responsabilidades:
+        - Expor endpoints RESTful para operações de leitura e escrita de usuários.
+        - Implementar geração de tokens utilizando JWT.
+		

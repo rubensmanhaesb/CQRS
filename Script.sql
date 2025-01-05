@@ -21,6 +21,20 @@ CREATE TABLE [TAREFA] (
 );
 GO
 
+CREATE TABLE [Usuarios] (
+    [Id] uniqueidentifier NOT NULL,
+    [Nome] nvarchar(150) NOT NULL,
+    [Email] nvarchar(100) NOT NULL,
+    [Senha] nvarchar(100) NOT NULL,
+    [RefreshToken] nvarchar(100) NULL,
+    [RefreshTokenExpiration] datetime2 NULL,
+    CONSTRAINT [PK_Usuarios] PRIMARY KEY ([Id])
+);
+GO
+
+CREATE UNIQUE INDEX [IX_Usuarios_Email] ON [Usuarios] ([Email]);
+GO
+
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
 VALUES (N'20241025221331_Initial', N'8.0.10');
 GO
