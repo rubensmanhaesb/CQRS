@@ -148,14 +148,14 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_0380288EC72F427BB9BE4D7DB3379640 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_45AC857EEB5447F28A9F7DB9B0616F55 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_12EC5EF3B7F44A73AA092E463C0BC0E0 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_115B2A5D3EF44AC387EA7F30B5C6963E }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1F094EE1C41D4B8DA49785EA48606AA1 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B6427845DF194AFC8029A10A9A7AD412 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'cqrs'
+          app-name: 'usuarioscqrs'
           slot-name: 'Production'
           package: './usuarioapp.zip'          
