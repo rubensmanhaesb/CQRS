@@ -7,7 +7,9 @@ on:
   push:
     branches:
       - main
-
+    paths: # Define os diretórios que acionam o workflow
+      - 'TarefasApp.API/**' # Aciona para mudanças no CQRS
+      - 'UsuarioApp.API/**' # Aciona para mudanças no UsuarioApp
     paths-ignore:  # Adicionado para ignorar alterações específicas
       - 'README.md'  # Ignorar mudanças no arquivo README.md
       - 'docs/**'  # (Opcional) Ignorar mudanças em qualquer arquivo dentro da pasta 'docs/'
@@ -19,7 +21,7 @@ on:
 jobs:
   buildCQRS:
     runs-on: windows-latest  # Define o ambiente onde o job será executado
-    if: ${{ github.event_name == 'push' && github.event.commits | any(commit => contains(commit.modified | join(' '), 'TarefasApp.API/')) }} # Condicional para executar o job apenas se alterações forem feitas no diretório 'TarefasApp.API/'
+    # Este job será acionado apenas se arquivos em 'TarefasApp.API/**' forem modificados
 
     steps:
       - uses: actions/checkout@v4 # Faz o checkout do código fonte
@@ -46,7 +48,7 @@ jobs:
 
   buildUsuarioApp:
     runs-on: windows-latest
-    if: ${{ github.event_name == 'push' && github.event.commits | any(commit => contains(commit.modified | join(' '), 'UsuarioApp.API/')) }} # Condicional para executar o job apenas se alterações forem feitas no diretório 'UsuarioApp.API/'
+    # Este job será acionado apenas se arquivos em 'UsuarioApp.API/**' forem modificados
 
     steps:
       - uses: actions/checkout@v4
