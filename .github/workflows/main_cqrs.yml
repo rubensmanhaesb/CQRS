@@ -19,7 +19,7 @@ on:
 jobs:
   buildCQRS:
     runs-on: windows-latest  # Define o ambiente onde o job será executado
-    if: ${{ github.ref == 'refs/heads/main' }} # Verifica se a branch é 'main'
+    if: ${{ contains(github.ref, 'main') && github.event.push.changes | some(change => startsWith(change.path, 'TarefasApp.API/')) }}
 
     steps:
       - uses: actions/checkout@v4 # Faz o checkout do código fonte
@@ -46,7 +46,7 @@ jobs:
 
   buildUsuarioApp:
     runs-on: windows-latest
-    if: ${{ github.ref == 'refs/heads/main' }} # Verifica se a branch é 'main'
+    if: ${{ contains(github.ref, 'main') && github.event.push.changes | some(change => startsWith(change.path, 'UsuarioApp.API/')) }}
 
     steps:
       - uses: actions/checkout@v4
