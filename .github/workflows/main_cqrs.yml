@@ -21,7 +21,7 @@ on:
 jobs:
   buildCQRS:
     runs-on: windows-latest  # Define o ambiente onde o job será executado
-    # Este job será acionado apenas se arquivos em 'TarefasApp.API/**' forem modificados
+    if: ${{ contains(github.event.head_commit.message, 'TarefasApp.API') }} # Executa se houver alterações em CQRS
 
     steps:
       - uses: actions/checkout@v4 # Faz o checkout do código fonte
@@ -48,7 +48,7 @@ jobs:
 
   buildUsuarioApp:
     runs-on: windows-latest
-    # Este job será acionado apenas se arquivos em 'UsuarioApp.API/**' forem modificados
+    if: ${{ contains(github.event.head_commit.message, 'UsuarioApp.API') }} # Executa se houver alterações em UsuarioApp 
 
     steps:
       - uses: actions/checkout@v4
