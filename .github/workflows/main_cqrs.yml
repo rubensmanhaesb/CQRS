@@ -14,25 +14,26 @@ on:
       - '**/*.js'        # Ignorar mudanças em arquivos JavaScript
       - '**/*.css'       # Ignorar mudanças em arquivos CSS
       - '**/*.html'      # Ignorar mudanças em arquivos HTML      
-  workflow_dispatch:
+  workflow_dispatch: # Permite que o workflow seja acionado manualmente
 
 jobs:
   buildCQRS:
-    runs-on: windows-latest
+    runs-on: windows-latest  # Define o ambiente onde o job será executado
+    if: ${{ github.event_name == 'push' && github.event.commits | any(commit => contains(commit.modified | join(' '), 'TarefasApp.API/')) }} # Condicional para executar o job apenas se alterações forem feitas no diretório 'TarefasApp.API/'
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4 # Faz o checkout do código fonte
 
       - name: Set up .NET Core
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v4  # Configura o ambiente .NET Core
         with:
-          dotnet-version: '8.x'
+          dotnet-version: '8.x'  # Especifica a versão do .NET Core
 
       - name: Build CQRS Project
-        run: dotnet build TarefasApp.API/TarefasApp.API.csproj --configuration Release
+        run: dotnet build TarefasApp.API/TarefasApp.API.csproj --configuration Release # Constrói o projeto CQRS em modo Release
 
       - name: Publish CQRS Project
-        run: dotnet publish TarefasApp.API/TarefasApp.API.csproj -c Release -o ./cqrs-app
+        run: dotnet publish TarefasApp.API/TarefasApp.API.csproj -c Release -o ./cqrs-app  # Publica o projeto no diretório ./cqrs-app
 
       - name: Compress CQRS App into a ZIP
         run: Compress-Archive -Path ./cqrs-app/* -DestinationPath ./cqrs-app.zip
@@ -45,6 +46,7 @@ jobs:
 
   buildUsuarioApp:
     runs-on: windows-latest
+    if: ${{ github.event_name == 'push' && github.event.commits | any(commit => contains(commit.modified | join(' '), 'UsuarioApp.API/')) }} # Condicional para executar o job apenas se alterações forem feitas no diretório 'UsuarioApp.API/'
 
     steps:
       - uses: actions/checkout@v4
