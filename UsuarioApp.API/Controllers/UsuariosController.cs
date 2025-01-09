@@ -10,6 +10,7 @@ namespace UsuariosApp.API.Controllers
     [ApiController] 
     public class UsuariosController : ControllerBase
     {
+        private string teste = "123";
         private readonly UsuarioService _usuarioService;
 
         public UsuariosController(UsuarioService usuarioService)
