@@ -7,7 +7,7 @@ using TarefasApp.Application.Interfaces;
 
 namespace TarefasApp.API.Controllers
 {
-    [Authorize]
+    [Authorize] 
     [Route("api/[controller]")]
     [ApiController]
     public class TarefasController : ControllerBase

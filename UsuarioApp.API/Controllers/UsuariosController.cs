@@ -7,7 +7,7 @@ using UsuariosApp.API.Services;
 namespace UsuariosApp.API.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController] 
     public class UsuariosController : ControllerBase
     {
         private readonly UsuarioService _usuarioService;
