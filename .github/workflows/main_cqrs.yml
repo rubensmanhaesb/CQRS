@@ -19,7 +19,7 @@ on:
 jobs:
   buildCQRS:
     runs-on: windows-latest  # Define o ambiente onde o job será executado
-    if: ${{ github.event_name == 'push' && contains(github.ref, 'main') && contains(github.event.head_commit.message, 'TarefasApp.API') }}
+    if: ${{ github.ref == 'refs/heads/main' }} # Verifica se a branch é 'main'
 
     steps:
       - uses: actions/checkout@v4 # Faz o checkout do código fonte
@@ -46,7 +46,7 @@ jobs:
 
   buildUsuarioApp:
     runs-on: windows-latest
-    if: ${{ github.event_name == 'push' && contains(github.ref, 'main') && contains(github.event.head_commit.message, 'UsuarioApp.API') }}
+    if: ${{ github.ref == 'refs/heads/main' }} # Verifica se a branch é 'main'
 
     steps:
       - uses: actions/checkout@v4
