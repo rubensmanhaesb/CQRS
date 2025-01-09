@@ -12,6 +12,7 @@ namespace TarefasApp.API.Controllers
     [ApiController]
     public class TarefasController : ControllerBase
     {
+        private string teste = "123";
         private readonly ITarefaAppService? _tarefaAppService;
 
         public TarefasController(ITarefaAppService? tarefaAppService)
