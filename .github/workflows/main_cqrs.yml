@@ -7,9 +7,7 @@ on:
   push:
     branches:
       - main
-    paths: # Define os diretórios que acionam o workflow
-      - 'TarefasApp.API/**' # Aciona para mudanças no CQRS
-      - 'UsuarioApp.API/**' # Aciona para mudanças no UsuarioApp
+
     paths-ignore:  # Adicionado para ignorar alterações específicas
       - 'README.md'  # Ignorar mudanças no arquivo README.md
       - 'docs/**'  # (Opcional) Ignorar mudanças em qualquer arquivo dentro da pasta 'docs/'
